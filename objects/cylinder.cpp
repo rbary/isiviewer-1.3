@@ -176,10 +176,6 @@ Cylinder::Cylinder():TriMesh()      //to do with parameters
         this->addVertex(allVtx[i][0],allVtx[i][1],allVtx[i][2]);
     }
 
-    /*for(unsigned int i=0;i<vTopDisk.size();i++){
-              this->addVertex(vTopDisk[i][0],vTopDisk[i][1],vTopDisk[i][2]);
-    }*/
-
     //--Fill top cover surface triangles--------------------------------------------------
     for(unsigned int i=0;i<topTrgl.size();i++){
         //std::cout<<topTrgl[i][0]<<"|"<<topTrgl[i][1]<<"|"<<topTrgl[i][2]<<endl;
