@@ -1,6 +1,6 @@
 #include "torus.h"
-#define ANGLE_VARIATION 90
-#define ANGLE_VARIATION_TORUS 90
+#define ANGLE_VARIATION 10
+#define ANGLE_VARIATION_TORUS 10
 
 Torus::Torus():TriMesh()
 {
@@ -15,7 +15,7 @@ Torus::Torus():TriMesh()
     int nbPcVtx=0;
     float anglePrimary=0;
     float anglePrimaryV=ANGLE_VARIATION;
-    float angleTorus=90;
+    float angleTorus=0;
     float angleTorusV=ANGLE_VARIATION_TORUS;
 
 
@@ -66,42 +66,81 @@ Torus::Torus():TriMesh()
     int s=nbPcVtx;
     int t=s+1;
 
-    for (unsigned int i=0;i<torusTrgl.size();i++){
+    for (unsigned int i=0;i<torusTrgl.size()-(2 * nbPcVtx);i++){
         torusTrgl[i][0]=r;
         torusTrgl[i][1]=s;
         torusTrgl[i][2]=t;
 
+        /*if(r==(allVtx.size() - (nbPcVtx+1)) && (i % 2)==1){
+            r++;
+            s=0;
+            t=1;
+        }else{*/
+
         if((std::abs(r-s)==1) && (std::abs(s-t)==nbPcVtx)){
             r++;
             s=s+(nbPcVtx);
-            t=t+9;
-            cout<<"im here and i equals to: "<<i<<endl;
+            t=t+(2 * nbPcVtx)+1;
         }else{
             //r variable behavior
             if((i % 2)==1)
                 r++;
 
             //t variable behavior
-            //bug here to fix
-            if((t % (nbPcVtx-1))==0 && (i % 2)==1){
-                t=t+1;
+            if(((t+1) % nbPcVtx)==0 && (i % 2)==1){
+                    t=t+1;
             }else{
-                        if((i % 2)==1)
-                            t=t+nbPcVtx+1;
+                if((i % 2)==1)
+                    t=t+nbPcVtx+1;
 
-                        if((i % 2)==0)
-                            t=t-(nbPcVtx);
+                if((i % 2)==0)
+                    t=t-(nbPcVtx);
+            }
+
+
+            //s variable behavior
+            if(((s+1) % (nbPcVtx)) == 0 && (i % 2)==0){
+                    s=s-(nbPcVtx-1);
+            }else{
+                if((i % 2)==0)
+                    s++;
+            }
+        }
+
+        int r=allVtx.size()-nbPcVtx;
+        int s=0;
+        int t=s+1;
+
+        for(unsigned int i=torusTrgl.size()-(2 * nbPcVtx);i<torusTrgl.size();i++){
+            torusTrgl[i][0]=r;
+            torusTrgl[i][1]=s;
+            torusTrgl[i][2]=t;
+
+            //r variable behavior
+            if((i % 2)==1)
+                r++;
+
+            //t variable behavior
+            if(t==(allVtx.size()-1) && (i % 2)==1){
+                    t=0;
+            }else{
+                if((i % 2)==1)
+                    t=t-(allVtx.size()-nbPcVtx-1);
+
+                if((i % 2)==0)
+                    t=t+(allVtx.size()-nbPcVtx);
             }
 
             //s variable behavior
-            if((s % ((2 * nbPcVtx)-1)) == 0 && (i % 2)==0){
-                s=s-(nbPcVtx-1);
+            if(((s+1) % (nbPcVtx)) == 0 && (i % 2)==0){
+                    s=s-(nbPcVtx-1);
             }else{
-                    if((i % 2)==0)
-                        s++;
+                if((i % 2)==0)
+                    s++;
             }
+
         }
-    }
+}
 
     //--- Fill vertices vector-----------------------------------------------------------
     cout<<"allVtx size is: "<<allVtx.size()<<endl;
