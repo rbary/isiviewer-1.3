@@ -12,6 +12,7 @@ class Sphere: public TriMesh
 {
 public:
     Sphere();
+    virtual ~Sphere(){};
 };
 
 #endif // SPHERE_H

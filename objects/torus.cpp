@@ -1,6 +1,6 @@
 #include "torus.h"
-#define ANGLE_VARIATION 10
-#define ANGLE_VARIATION_TORUS 10
+#define ANGLE_VARIATION 90
+#define ANGLE_VARIATION_TORUS 90
 
 Torus::Torus():TriMesh()
 {
@@ -8,7 +8,6 @@ Torus::Torus():TriMesh()
     std::vector<std::vector<GLfloat> > allVtx;           //container to store all vertices
     std::vector<std::vector<GLfloat> > primaryCircle;    //container to store a primary circle
     std::vector<GLfloat> aVtx(3,0);                      //any vertex
-    //glm::vec3 rotVtx;
 
     //Triangles vertex indices///////////////////////////////////////////////////////////
     //--The primary circle definition----------------------------------------------------
@@ -30,8 +29,6 @@ Torus::Torus():TriMesh()
 
         anglePrimary+=anglePrimaryV;
     }
-
-    cout<<"Primary circle vertices number is: "<<nbPcVtx<<endl;
 
     //primary circle translation following y to get the right position for the torus construction
     for(unsigned int i=0;i<primaryCircle.size();i++)
@@ -60,8 +57,6 @@ Torus::Torus():TriMesh()
     std::vector<GLint> aTrgl(3,0);
     std::vector<std::vector<GLint> > torusTrgl(nbTrgl,aTrgl);
 
-    cout<<"nb primary circle vertices is: "<<nbPcVtx;
-
     int r=0;
     int s=nbPcVtx;
     int t=s+1;
@@ -70,12 +65,6 @@ Torus::Torus():TriMesh()
         torusTrgl[i][0]=r;
         torusTrgl[i][1]=s;
         torusTrgl[i][2]=t;
-
-        /*if(r==(allVtx.size() - (nbPcVtx+1)) && (i % 2)==1){
-            r++;
-            s=0;
-            t=1;
-        }else{*/
 
         if((std::abs(r-s)==1) && (std::abs(s-t)==nbPcVtx)){
             r++;
@@ -96,7 +85,6 @@ Torus::Torus():TriMesh()
                 if((i % 2)==0)
                     t=t-(nbPcVtx);
             }
-
 
             //s variable behavior
             if(((s+1) % (nbPcVtx)) == 0 && (i % 2)==0){
@@ -143,19 +131,15 @@ Torus::Torus():TriMesh()
 }
 
     //--- Fill vertices vector-----------------------------------------------------------
-    cout<<"allVtx size is: "<<allVtx.size()<<endl;
     for(unsigned int i=0;i<allVtx.size();i++){
-        std::cout<<allVtx[i][0]<<"|"<<allVtx[i][1]<<"|"<<allVtx[i][2]<<endl;
-        std::cout<<"-------------------------------"<<endl;
+        /*std::cout<<allVtx[i][0]<<"|"<<allVtx[i][1]<<"|"<<allVtx[i][2]<<endl;
+        std::cout<<"-------------------------------"<<endl;*/
         this->addVertex(allVtx[i][0],allVtx[i][1],allVtx[i][2]);
     }
 
-    cout<<"********************************************"<<endl;
-
-    cout<<"torusTrgl size is: "<<torusTrgl.size()<<endl;
     //--Fill surface triangles-----------------------------------------------------------
     for(unsigned int i=0;i<torusTrgl.size();i++){
-        std::cout<<torusTrgl[i][0]<<"|"<<torusTrgl[i][1]<<"|"<<torusTrgl[i][2]<<endl;
+        //std::cout<<torusTrgl[i][0]<<"|"<<torusTrgl[i][1]<<"|"<<torusTrgl[i][2]<<endl;
         this->addTriangle(torusTrgl[i][0],torusTrgl[i][1],torusTrgl[i][2]);
     }
 

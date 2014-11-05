@@ -42,7 +42,7 @@ Cone::Cone(): TriMesh()
     //int nbLatetalTrgl=2 * (kCoverVtx-1) * ((NBFLOOR-2)+1);
     std::vector<GLint> aTrgl(3,0);
     std::vector<std::vector<GLint> > lateralTrgl(nbBaseVtx-1,aTrgl);
-    std::vector<std::vector<GLint> > baseTrgl((nbBaseVtx-1),aTrgl);
+    std::vector<std::vector<GLint> > baseTrgl(nbBaseVtx-1,aTrgl);
     //Base surface vertices indices------------------------------------------------------
     int a=1;
     int b=a+1;
