@@ -68,5 +68,5 @@ Cube::Cube()
           Normal nV(nv[i][0], nv[i][1], nv[i][2]);
           this->addNormalV(nV);
         }
-    }
+   }
 }

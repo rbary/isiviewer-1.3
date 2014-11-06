@@ -1,9 +1,10 @@
 #include "torus.h"
-#define ANGLE_VARIATION 90
-#define ANGLE_VARIATION_TORUS 90
+#define ANGLE_VARIATION 10
+#define ANGLE_VARIATION_TORUS 10
 
 Torus::Torus():TriMesh()
 {
+    _name = "Torus";
     //vertices coordinates///////////////////////////////////////////////////////////////
     std::vector<std::vector<GLfloat> > allVtx;           //container to store all vertices
     std::vector<std::vector<GLfloat> > primaryCircle;    //container to store a primary circle

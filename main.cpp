@@ -23,6 +23,7 @@
 #include "objects/cone.h"
 #include "objects/sphere.h"
 #include "objects/torus.h"
+#include "objects/funcsurface.h"
 
 /**
 * Program usage
@@ -60,7 +61,7 @@ int main(int argc, char *argv[]){
 
 
   // add surface functions
-  // ...
+  myScene->addObject(new FuncSurface(50,50,-PI,PI,-PI,PI,FuncSurface::func_expcos));
 
   // add user defined OFF files
   // ...

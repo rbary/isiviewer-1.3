@@ -88,7 +88,6 @@ Sphere::Sphere():TriMesh()
     //Triangles vertices indices/////////////////////////////////////////////////////////
     //int nbRemT=2 * (allVtx.size()-2 + nbCircleVtx);
     int nbRTrgl=2 * nbCircleVtx * (((allVtx.size()-2)/nbCircleVtx)-1);
-    cout<<"nb Triangles remaining "<<nbRTrgl<<endl;
     std::vector<GLint> aTrgl(3,0);
     std::vector<std::vector<GLint> > topHatTrgl(nbCircleVtx,aTrgl);
     std::vector<std::vector<GLint> > botHatTrgl(nbCircleVtx,aTrgl);
@@ -143,11 +142,9 @@ Sphere::Sphere():TriMesh()
                    t=t+1;
                }else{
                            if((i % 2)==1)
-                               //t=t+5;
                                t=t+(nbCircleVtx+1);
 
                            if((i % 2)==0)
-                               //t=t-4;
                                t=t-(nbCircleVtx);
                }
 
@@ -164,29 +161,28 @@ Sphere::Sphere():TriMesh()
 
     //--- Fill vertices and triangles vectors////////////////////////////////////////////
     //--- Fill vertices vectors----------------------------------------------------------
-      cout<<"allVtx number: "<<allVtx.size()<<endl;
       for(unsigned int i=0;i<allVtx.size();i++){
-          std::cout<<allVtx[i][0]<<"|"<<allVtx[i][1]<<"|"<<allVtx[i][2]<<endl;
-          std::cout<<"-----------------------------------------------"<<endl;
+          //std::cout<<allVtx[i][0]<<"|"<<allVtx[i][1]<<"|"<<allVtx[i][2]<<endl;
+          //std::cout<<"-----------------------------------------------"<<endl;
           this->addVertex(allVtx[i][0],allVtx[i][1],allVtx[i][2]);
       }
 
       //-- Fill base surface triangles vectors----------------------------------------------
          for(unsigned int i=0;i<topHatTrgl.size();i++){
-             std::cout<<topHatTrgl[i][0]<<"|"<<topHatTrgl[i][1]<<"|"<<topHatTrgl[i][2]<<endl;
+             //std::cout<<topHatTrgl[i][0]<<"|"<<topHatTrgl[i][1]<<"|"<<topHatTrgl[i][2]<<endl;
              this->addTriangle(topHatTrgl[i][0],topHatTrgl[i][1],topHatTrgl[i][2]);
          }
-         cout<<"***************************"<<endl;
+         //cout<<"***************************"<<endl;
 
          for(unsigned int i=0;i<botHatTrgl.size();i++){
-             std::cout<<botHatTrgl[i][0]<<"|"<<botHatTrgl[i][1]<<"|"<<botHatTrgl[i][2]<<endl;
+             //std::cout<<botHatTrgl[i][0]<<"|"<<botHatTrgl[i][1]<<"|"<<botHatTrgl[i][2]<<endl;
              this->addTriangle(botHatTrgl[i][0],botHatTrgl[i][1],botHatTrgl[i][2]);
          }
 
-         cout<<"***************************"<<endl;
+         //cout<<"***************************"<<endl;
 
          for(unsigned int i=0;i<remainingTrgl.size();i++){
-             std::cout<<remainingTrgl[i][0]<<"|"<<remainingTrgl[i][1]<<"|"<<remainingTrgl[i][2]<<endl;
+             //std::cout<<remainingTrgl[i][0]<<"|"<<remainingTrgl[i][1]<<"|"<<remainingTrgl[i][2]<<endl;
              this->addTriangle(remainingTrgl[i][0],remainingTrgl[i][1],remainingTrgl[i][2]);
          }
 

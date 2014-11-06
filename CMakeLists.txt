@@ -28,6 +28,7 @@ set(SOURCES ${UIC_OUT} ${MOC_OUT}
             objects/cone.cpp
             objects/sphere.cpp
             objects/torus.cpp
+            objects/funcsurface.cpp
 
             )
 

@@ -80,33 +80,34 @@ void TriMesh::computeNormalsV(float angle_threshold){
       addNormalV(n);
       addNormalV(n);
     }*/
-Normal n;
-std::vector<Triangle> trianglesAdjs;
+float diffAngle;
+//std::vector<Triangle> trianglesAdjs;
  for(unsigned int t=0;t<_triangles.size();t++){
        glm::vec3 const d=_vertices[_triangles[t][0]];
        glm::vec3 const e=_vertices[_triangles[t][1]];
        glm::vec3 const f=_vertices[_triangles[t][2]];
-       std::vector<Vertex> verticesCT;
-       verticesCT.push_back(d);
-       verticesCT.push_back(e);
-       verticesCT.push_back(f);
-       for(unsigned int vi=0;vi<verticesCT.size();vi++){
+       std::vector<Vertex> verticesCurrentT;
+       verticesCurrentT.push_back(d);
+       verticesCurrentT.push_back(e);
+       verticesCurrentT.push_back(f);
+       for(unsigned int vi=0;vi<verticesCurrentT.size();vi++){
+           Normal n;
            //cout<<"nb vertices of current triangles"<<verticesCT.size()<<endl;
            for(unsigned int ti=0;ti<_triangles.size();ti++){
                if(ti!=t){
-                   if(verticesCT[vi]==_vertices[_triangles[ti][0]] ||
-                      verticesCT[vi]==_vertices[_triangles[ti][1]] ||
-                      verticesCT[vi]==_vertices[_triangles[ti][2]]){
-                      /*//n+=_normalsT[ti];
-                      //normalsToSum.push_back(glm::normalize(_normalsT[ti]));*/
-                           //on fait le test pour le respect des aretes vives
-                           float angleTest=thresholdAngle(_normalsT[t],_normalsT[ti]);
-                           if(angleTest <= angle_threshold){
-                                      trianglesAdjs.push_back(_triangles[ti]);
+                   if(verticesCurrentT[vi]==_vertices[_triangles[ti][0]] ||
+                      verticesCurrentT[vi]==_vertices[_triangles[ti][1]] ||
+                      verticesCurrentT[vi]==_vertices[_triangles[ti][2]]){
+                           //we test the angle between the current triangle and adjacent triangle
+                          diffAngle= glm::angle(_normalsT[ti],_normalsT[t]);
+
+                           if(diffAngle < angle_threshold){
+                               n+=(_normalsT[ti]);
                            }
                       }
                    }
                }
+           addNormalV(glm::normalize(n));
            }
        }
  }
