@@ -83,9 +83,9 @@ void TriMesh::computeNormalsV(float angle_threshold){
 float diffAngle;
 //std::vector<Triangle> trianglesAdjs;
  for(unsigned int t=0;t<_triangles.size();t++){
-       glm::vec3 const d=_vertices[_triangles[t][0]];
-       glm::vec3 const e=_vertices[_triangles[t][1]];
-       glm::vec3 const f=_vertices[_triangles[t][2]];
+       Vertex d=_vertices[_triangles[t][0]];
+       Vertex e=_vertices[_triangles[t][1]];
+       Vertex f=_vertices[_triangles[t][2]];
        std::vector<Vertex> verticesCurrentT;
        verticesCurrentT.push_back(d);
        verticesCurrentT.push_back(e);

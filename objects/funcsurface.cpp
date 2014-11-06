@@ -5,38 +5,72 @@ FuncSurface::FuncSurface(int nbx, int nby, float minx, float maxx, float miny, f
     TriMesh(){
 
     _name ="Function surface";
+    std::vector<std::vector<GLint> > line;
+    std::vector<GLint> aTrgl;
     cout<<"it's work im here"<<endl;
 
     std::vector<std::vector<GLfloat> > allVtx;
     std::vector<GLfloat> aVtx(3,0);
+    float x_range=maxx-minx;
+    float y_range=maxy-miny;
 
-    float x_variation=(maxx-minx)/nbx;
-    float y_variation=(maxy-miny)/nby;
+    float delta_x=x_range/(nbx);
+    float delta_y=y_range/(nby);
 
-    //float x=-minx;
-    //float y=-miny;
-
-    /*for(float y=-miny;y<miny;y++){
-        for(float x=-minx;x<minx;x++){
-            aVtx[0]=(x);
-            aVtx[1]=(y);
-            //z computing
-            //aVtx[2]=((*pMathFn)(x,y));
-            aVtx[2]=0;
+    for(float x=minx;x<=maxx;x+=delta_x){
+        for(float y=miny;y<=maxy;y+=delta_y){
+            aVtx[0]=x/(x_range/2);
+            aVtx[1]=y/(y_range/2);
+            aVtx[2]=((*pMathFn)(x,y));
             allVtx.push_back(aVtx);
+
+            aTrgl.push_back(allVtx.size()-1);
         }
-    }*/
+        line.push_back(aTrgl);
+        aTrgl.clear();
+    }
 
-    allVtx.push_back(aVtx);
 
+    vector<vector<GLint> > triangles;
+    vector<GLint> att;
 
+    for(int i=0;i<line.size()-1;i++)
+    {
+        for(int j=0;j<nbx; j++)
+        {
+            att.push_back(line[i][j]);
+            att.push_back(line[i+1][j+1]);
+            att.push_back(line[i][j+1]);
+            triangles.push_back(att);
+            att.clear();
+
+            att.push_back(line[i][j]);
+            att.push_back(line[i+1][j]);
+            att.push_back(line[i+1][j+1]);
+
+            triangles.push_back(att);
+            att.clear();
+      }
+    }
     //--- Fill vertices vector-----------------------------------------------------------
-    cout<<"nb of alllVtx is"<<allVtx.size()<<endl;
+    //cout<<"Number of allVtx is: "<<allVtx.size()<<endl;
     for(unsigned int i=0;i<allVtx.size();i++){
-        std::cout<<allVtx[i][0]<<"|"<<allVtx[i][1]<<"|"<<allVtx[i][2]<<endl;
-        std::cout<<"------------------------------------------------"<<endl;
+        //std::cout<<allVtx[i][0]<<"|"<<allVtx[i][1]<<"|"<<allVtx[i][2]<<endl;
+        //std::cout<<"------------------------------------------------"<<endl;
         this->addVertex(allVtx[i][0],allVtx[i][1],allVtx[i][2]);
     }
+
+    cout<<"tringles size: "<<triangles.size()<<endl;
+
+    for(unsigned int i=0;i<triangles.size();i++){
+        //std::cout<<triangles[i][0]<<triangles[i][1]<<triangles[i][2]<<endl;
+        //std::cout<<"------------------------------------------------"<<endl;
+        this->addTriangle(triangles[i][0],triangles[i][1],triangles[i][2]);
+    }
+
+    computeNormalsT();
+    computeNormalsV();
+
 }
 
 float FuncSurface::func_expcos(float x, float y){
