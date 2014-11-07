@@ -36,7 +36,7 @@ FuncSurface::FuncSurface(int nbx, int nby, float minx, float maxx, float miny, f
 
     for(int i=0;i<line.size()-1;i++)
     {
-        for(int j=0;j<nbx; j++)
+        for(int j=0;j<nbx-1; j++)
         {
             att.push_back(line[i][j]);
             att.push_back(line[i+1][j+1]);

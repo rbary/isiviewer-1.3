@@ -29,7 +29,7 @@ set(SOURCES ${UIC_OUT} ${MOC_OUT}
             objects/sphere.cpp
             objects/torus.cpp
             objects/funcsurface.cpp
-            objects/fileloading.cpp
+            objects/off_loader.cpp
 
             )
 

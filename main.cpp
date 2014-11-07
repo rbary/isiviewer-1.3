@@ -11,6 +11,8 @@
  */
 #include <QApplication>
 #include "my_main_window.h"
+#include "tclap/CmdLine.h"
+#include "iostream"
 
 
 #include "my_object3d.h"
@@ -24,6 +26,7 @@
 #include "objects/sphere.h"
 #include "objects/torus.h"
 #include "objects/funcsurface.h"
+#include "objects/off_loader.h"
 
 /**
 * Program usage
@@ -62,9 +65,25 @@ int main(int argc, char *argv[]){
 
   // add surface functions
   myScene->addObject(new FuncSurface(50,50,-PI,PI,-PI,PI,FuncSurface::func_expcos));
+  //myScene->addObject(new FuncSurface(50,50,-PI,PI,-PI,PI,FuncSurface::func_expcos));
 
   // add user defined OFF files
   // ...
+  try{
+    TCLAP::CmdLine cmd("Command description message",' ', "0.9");
+    TCLAP::ValueArg<std::string> offFileArg("o", "off", "Off file loading",false,"","string");
+    cmd.add(offFileArg);
+    cmd.parse(argc, argv);
+    std::string offFileName = offFileArg.getValue();
+
+    //off file name handling
+    std::cout << "File name is: "<<offFileName<<std::endl;
+    myScene->addObject(new offLoader(offFileName));
+
+  } catch (TCLAP::ArgException &e) //catch any exceptions
+  {
+    std::cerr << "error: "<<e.error() << "for arg " << e.argId() << std::endl;
+  }
 
   // initialize my custom main window
   QPointer<MyMainWindow> myMainWindow = new MyMainWindow(myScene);
