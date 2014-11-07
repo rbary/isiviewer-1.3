@@ -1,9 +1,15 @@
 #include "cone.h"
-#define ANGLE_VARIATION 10
 
-Cone::Cone(): TriMesh()
+Cone::Cone(int nbpoint): TriMesh()
 {
     _name="Cone";
+
+    //angle variation computing
+    if(nbpoint < 4){
+        throw std::domain_error("Dot number deficient: at least 4 dots are required to create Cone");
+    }
+    float angle=0;
+    float angleV=360/nbpoint;
     //Vertices coordinates///////////////////////////////////////////////////////////////
     std::vector<std::vector<GLfloat> > vBaseDisk;
     std::vector<std::vector<GLfloat> > allVtx;
@@ -14,8 +20,6 @@ Cone::Cone(): TriMesh()
     peakVtx.push_back(0);
     peakVtx.push_back(1);
     //base vertices coordinates----------------------------------------------------------
-    float baseAngle=0;                                //angle of base disk (the same for the bottom disk)
-    float baseAngleV=ANGLE_VARIATION;                 //variation of baseAngle
     std::vector<GLfloat> aVtxBase(3,0);               //any base vertex
     //we add first the base center vertex
     std::vector<GLfloat> baseDiskCenterVtx;
@@ -24,13 +28,13 @@ Cone::Cone(): TriMesh()
     baseDiskCenterVtx.push_back(-1);
     vBaseDisk.push_back(baseDiskCenterVtx);
     nbBaseVtx+=1;
-    while(baseAngle<360){
-        aVtxBase[0]=(cos(baseAngle * PI/180.0));
-        aVtxBase[1]=(sin(baseAngle * PI/180.0));
+    while(angle<360){
+        aVtxBase[0]=(cos(angle * PI/180.0));
+        aVtxBase[1]=(sin(angle * PI/180.0));
         aVtxBase[2]=(-1);
         vBaseDisk.push_back(aVtxBase);
         nbBaseVtx+=1;
-        baseAngle+=baseAngleV;
+        angle+=angleV;
     }
 
     //get all vertices in the same container to define triangles thereafter

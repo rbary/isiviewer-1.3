@@ -1,29 +1,34 @@
 #include "diskhole.h"
 
-DiskHole::DiskHole(): TriMesh ()
+DiskHole::DiskHole(int nbpoint): TriMesh ()
 {
     _name = "DiskHole";
 
+    //angle variation computing
+    if(nbpoint < 4){
+        throw std::domain_error("Dot number deficient: at least 4 dots are required to create DiskHole");
+    }
+    float angle=0;
+    float angleV=360/nbpoint;
+
     //vertex coordinates
     std::vector<std::vector<GLfloat> > v;
-    float agl=0;
-    float dagl=10;                             //Variation dangle
     std::vector<GLfloat> aVertexSd(3,0);       //A temporary vertex for the small disk
     std::vector<GLfloat> aVertexBd(3,0);       //A temporary vertex for the big disk
 
-    while(agl<360){
-        aVertexSd[0]=0.5 * cos(agl * PI/180.0);
-        aVertexSd[1]=0.5 * sin(agl * PI/180.0);
+    while(angle<360){
+        aVertexSd[0]=0.5 * cos(angle * PI/180.0);
+        aVertexSd[1]=0.5 * sin(angle * PI/180.0);
         aVertexSd[2]=0;
 
-        aVertexBd[0]=cos(agl * PI/180.0);
-        aVertexBd[1]=sin(agl * PI/180.0);
+        aVertexBd[0]=cos(angle * PI/180.0);
+        aVertexBd[1]=sin(angle * PI/180.0);
         aVertexBd[2]=0;
 
         v.push_back(aVertexSd);
         v.push_back(aVertexBd);
 
-        agl+=dagl;
+        angle+=angleV;
     }
 
     //triangles vertex indices

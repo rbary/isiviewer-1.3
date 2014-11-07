@@ -7,11 +7,15 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 #include "triMesh.h"
+/**
+ * Sphere object
+ *
+ */
 
 class Sphere: public TriMesh
 {
 public:
-    Sphere();
+    Sphere(int nbpoint);
     virtual ~Sphere(){};
 };
 

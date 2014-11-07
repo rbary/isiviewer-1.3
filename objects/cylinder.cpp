@@ -1,20 +1,24 @@
 #include "cylinder.h"
-#define NBFLOOR 4                     //total disk number NBDISK-> NBSTEP /*faire un test sur nbFlor (doit etre multiple de 2 et >=2)
-#define ANGLE_VARIATION 10            //angle variation
+#define NBFLOOR 4                    //floor number
 
-Cylinder::Cylinder():TriMesh()      //to do with parameters
+Cylinder::Cylinder(int nbpoint):TriMesh()      //to do with parameters
 {
     _name="Cylinder";
+
+    //angle variation computing
+    if(nbpoint < 4){
+        throw std::domain_error("Dot number deficient: at least 4 dots are required to create Cylinder");
+    }
+    float angle=0;
+    float angleV=360/nbpoint;
+    //vertex coordinates/////////////////////////////////////////////////////////////////
     int kCoverVtx=0;                                        //to count top or bottom disk vertex
     std::vector<std::vector<GLfloat> > vMidCircles;         //container to store middle circles vertex
     std::vector<std::vector<GLfloat> > vTopDisk;            //container to store top disk vertex
     std::vector<std::vector<GLfloat> > vBotDisk;            //container to store bottom disk vertex
     std::vector<std::vector<GLfloat> > allVtx;              //container to store all vertices of cylinder
     std::vector<GLfloat> zMid;
-    //vertex coordinates/////////////////////////////////////////////////////////////////
     //top disk vertex////////////////////////////////////////////////////////////////////
-    float coverAngle=0;                                //angle of top disk (the same for the bottom disk)
-    float coverAngleV=ANGLE_VARIATION;                 //variation of coverAngle
     std::vector<GLfloat> aVtxTop(3,0);                 //any top vertex
     //we add first the center vertex
     std::vector<GLfloat> topDiskCenterVtx;
@@ -24,27 +28,27 @@ Cylinder::Cylinder():TriMesh()      //to do with parameters
     vTopDisk.push_back(topDiskCenterVtx);
     kCoverVtx+=1;
 
-    while(coverAngle<360){
-        aVtxTop[0]=(cos(coverAngle * PI/180.0));
-        aVtxTop[1]=(sin(coverAngle * PI/180.0));
+    while(angle<360){
+        aVtxTop[0]=(cos(angle * PI/180.0));
+        aVtxTop[1]=(sin(angle * PI/180.0));
         aVtxTop[2]=(1);
         vTopDisk.push_back(aVtxTop);
         kCoverVtx+=1;
-        coverAngle+=coverAngleV;
+        angle+=angleV;
     }
     /////////////////////////////////////////////////////////////////////////////////////
 
     //bottom disk vertex/////////////////////////////////////////////////////////////////
-    coverAngle=0;                                    //angle of the bottom disk (the same for the top disk re-init)
+    angle=0;                                           //angle of the bottom disk (the same for the top disk re-init)
     std::vector<GLfloat> aVtxBot(3,0);                //any bottom vertex
     //we add first the center vertex
     std::vector<GLfloat> botDiskCenterVtx;
-    while(coverAngle<360){
-        aVtxBot[0]=(cos(coverAngle * PI/180.0));
-        aVtxBot[1]=(sin(coverAngle * PI/180.0));
+    while(angle<360){
+        aVtxBot[0]=(cos(angle * PI/180.0));
+        aVtxBot[1]=(sin(angle * PI/180.0));
         aVtxBot[2]=(-1);
         vBotDisk.push_back(aVtxBot);
-        coverAngle+=coverAngleV;
+        angle+=angleV;
     }
     botDiskCenterVtx.push_back(0);
     botDiskCenterVtx.push_back(0);
@@ -59,15 +63,14 @@ Cylinder::Cylinder():TriMesh()      //to do with parameters
         zMid.push_back(zOfCircle);
 
         for(int i=0;i<nbMidCircle;i++){
-            float midAngle=0;                                       //angle of a middle circle
-            float midAngleV=ANGLE_VARIATION;                        //variation of midAngle
+            angle=0;
             std::vector<GLfloat> aMidVtx(3,0);
-            while(midAngle<360){
-                aMidVtx[0]=(cos(midAngle * PI/180.0));
-                aMidVtx[1]=(sin(midAngle * PI/180.0));
+            while(angle<360){
+                aMidVtx[0]=(cos(angle * PI/180.0));
+                aMidVtx[1]=(sin(angle * PI/180.0));
                 aMidVtx[2]=(zOfCircle);
                 vMidCircles.push_back(aMidVtx);
-                midAngle+=midAngleV;
+                angle+=angleV;
             }
             zOfCircle=zOfCircle-hBetweenCircle;
             zMid.push_back(zOfCircle);

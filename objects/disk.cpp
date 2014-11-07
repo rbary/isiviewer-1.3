@@ -1,14 +1,17 @@
 #include "disk.h"
-#define ANGLE_VARIATION 10            //angle variation
 
-Disk::Disk():TriMesh()
+Disk::Disk(int nbpoint):TriMesh()
 {
     _name = "Disk";
 
+    //angle variation computing
+    if(nbpoint < 4){
+        throw std::domain_error("Dot number deficient: at least 4 dots are required to create Disk");
+    }
+    float angle=0;
+    float angleV=360/nbpoint;
     //vertex coordinates
     std::vector<std::vector<float> > v;
-    float angle=0;                                 //angle
-    float anglev=10;                               //angle variation
     std::vector<float> aVertex(3,0);
     std::vector<float> centerVertex(3,0);
 
@@ -19,7 +22,7 @@ Disk::Disk():TriMesh()
         aVertex[1]=(sin(angle * PI/180.0));
         aVertex[2]=(0);
         v.push_back(aVertex);
-        angle+=anglev;
+        angle+=angleV;
     }
 
     //triangles vertex indices

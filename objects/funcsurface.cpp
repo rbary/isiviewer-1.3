@@ -7,7 +7,6 @@ FuncSurface::FuncSurface(int nbx, int nby, float minx, float maxx, float miny, f
     _name ="Function surface";
     std::vector<std::vector<GLint> > line;
     std::vector<GLint> aTrgl;
-    cout<<"it's work im here"<<endl;
 
     std::vector<std::vector<GLfloat> > allVtx;
     std::vector<GLfloat> aVtx(3,0);
@@ -60,14 +59,13 @@ FuncSurface::FuncSurface(int nbx, int nby, float minx, float maxx, float miny, f
         this->addVertex(allVtx[i][0],allVtx[i][1],allVtx[i][2]);
     }
 
-    cout<<"tringles size: "<<triangles.size()<<endl;
-
     for(unsigned int i=0;i<triangles.size();i++){
         //std::cout<<triangles[i][0]<<triangles[i][1]<<triangles[i][2]<<endl;
         //std::cout<<"------------------------------------------------"<<endl;
         this->addTriangle(triangles[i][0],triangles[i][1],triangles[i][2]);
     }
 
+    this->normalize();
     computeNormalsT();
     computeNormalsV();
 
@@ -75,4 +73,11 @@ FuncSurface::FuncSurface(int nbx, int nby, float minx, float maxx, float miny, f
 
 float FuncSurface::func_expcos(float x, float y){
     return exp(-(x*x/2+y*y/2))*cos(2*x*x+2*y*y);
+}
+
+float FuncSurface::func_freak(float x,float y){
+    //return exp(-(x*x/2+y*y/2))*sin(2*x*x+2*y*y);
+    return .75/exp(pow(2,(x*5))*pow(2,(y*5)));
+    //return sin(5 * x)*cos(5 * y)/5;
+
 }

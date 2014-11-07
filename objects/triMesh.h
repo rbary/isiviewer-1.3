@@ -15,11 +15,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include <algorithm>
+#include <math.h>
+#include <stdexcept>
 
 typedef glm::vec3  Vertex;
 typedef glm::vec3  Normal;
 typedef std::vector<int> Triangle;
-
 
 using namespace std;
 /** 

@@ -48,25 +48,6 @@ Cube::Cube()
   for (int i=0; i<12; ++i)
     this->addTriangle(t[i][0], t[i][1], t[i][2]);
 
-  // Fill normals vectors
-  bool use_computed_normals =true;
-
-  if (use_computed_normals) {
-
       computeNormalsT();
       computeNormalsV();  // to be fixed
-
-    } else { // use manually defined normals
-
-      // set triangle normals
-      for (int i=0; i<12; ++i) {
-          Normal nT(nt[i][0], nt[i][1], nt[i][2]);
-          this->addNormalT(nT);
-        }
-      // set triangle vertex normals
-      for (int i=0; i<36; ++i) {
-          Normal nV(nv[i][0], nv[i][1], nv[i][2]);
-          this->addNormalV(nV);
-        }
-   }
 }

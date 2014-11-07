@@ -13,6 +13,7 @@
 #include "my_main_window.h"
 #include "tclap/CmdLine.h"
 #include "iostream"
+#define NB_POINTS 50
 
 
 #include "my_object3d.h"
@@ -55,17 +56,47 @@ int main(int argc, char *argv[]){
   myScene->addObject(new Cube());
   myScene->addObject(new Pyramid());
   myScene->addObject(new CubeCorner());
-  myScene->addObject(new Disk());
-  myScene->addObject(new DiskHole());
-  myScene->addObject(new Cylinder());
-  myScene->addObject(new Cone());
-  myScene->addObject(new Sphere());
-  myScene->addObject(new Torus());
+
+  try{
+    myScene->addObject(new Disk(NB_POINTS));
+  }catch(std::exception &e){
+      cerr<< "Error: "<<e.what() <<endl;
+  }
+
+  try{
+    myScene->addObject(new DiskHole(NB_POINTS));
+  }catch(std::exception &e){
+      cerr<< "Error: "<<e.what() <<endl;
+  }
+
+  try{
+    myScene->addObject(new Cylinder(NB_POINTS));
+  }catch(std::exception &e){
+      cerr<< "Error: "<<e.what() <<endl;
+  }
+
+  try{
+    myScene->addObject(new Cone(NB_POINTS));
+  }catch(std::exception &e){
+      cerr<< "Error: "<<e.what() <<endl;
+  }
+
+  try{
+  myScene->addObject(new Sphere(NB_POINTS));
+  }catch(std::exception &e){
+      cerr<< "Error: "<<e.what() <<endl;
+  }
+
+  try{
+    myScene->addObject(new Torus(NB_POINTS));
+  }catch(std::exception &e){
+      cerr<< "Error: "<<e.what() <<endl;
+  }
 
 
   // add surface functions
   myScene->addObject(new FuncSurface(50,50,-PI,PI,-PI,PI,FuncSurface::func_expcos));
-  //myScene->addObject(new FuncSurface(50,50,-PI,PI,-PI,PI,FuncSurface::func_expcos));
+  myScene->addObject(new FuncSurface(50,50,-PI,PI,-PI,PI,FuncSurface::func_freak));
 
   // add user defined OFF files
   // ...
@@ -76,9 +107,15 @@ int main(int argc, char *argv[]){
     cmd.parse(argc, argv);
     std::string offFileName = offFileArg.getValue();
 
-    //off file name handling
-    std::cout << "File name is: "<<offFileName<<std::endl;
-    myScene->addObject(new offLoader(offFileName));
+
+    if(offFileName !=""){
+        //off file name handling
+        try{
+            myScene->addObject(new offLoader(offFileName));
+        }catch(std::logic_error &e){
+            std::cout<<"Exception : "<<e.what()<<endl;
+        }
+    }
 
   } catch (TCLAP::ArgException &e) //catch any exceptions
   {

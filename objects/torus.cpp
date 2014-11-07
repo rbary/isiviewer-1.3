@@ -1,10 +1,17 @@
 #include "torus.h"
-#define ANGLE_VARIATION 10
-#define ANGLE_VARIATION_TORUS 10
 
-Torus::Torus():TriMesh()
+
+Torus::Torus(int nbpoint):TriMesh()
 {
     _name = "Torus";
+
+    //angle variation computing
+    if(nbpoint < 4){
+        throw std::domain_error("Dot number deficient: at least 4 dots are required to create Torus");
+    }
+    float angle=0;
+    float angleV=360/nbpoint;
+
     //vertices coordinates///////////////////////////////////////////////////////////////
     std::vector<std::vector<GLfloat> > allVtx;           //container to store all vertices
     std::vector<std::vector<GLfloat> > primaryCircle;    //container to store a primary circle
@@ -13,22 +20,15 @@ Torus::Torus():TriMesh()
     //Triangles vertex indices///////////////////////////////////////////////////////////
     //--The primary circle definition----------------------------------------------------
     int nbPcVtx=0;
-    float anglePrimary=0;
-    float anglePrimaryV=ANGLE_VARIATION;
-    float angleTorus=0;
-    float angleTorusV=ANGLE_VARIATION_TORUS;
-
-
-
-    while(anglePrimary<360){
+    while(angle<360){
         aVtx[0]=0;
-        aVtx[1]=0.25 * cos(anglePrimary * PI/180.0);
-        aVtx[2]=0.25 * sin(anglePrimary * PI/180.0);
+        aVtx[1]=0.25 * cos(angle * PI/180.0);
+        aVtx[2]=0.25 * sin(angle * PI/180.0);
 
         primaryCircle.push_back(aVtx);
         nbPcVtx++;
 
-        anglePrimary+=anglePrimaryV;
+        angle+=angleV;
     }
 
     //primary circle translation following y to get the right position for the torus construction
@@ -41,17 +41,18 @@ Torus::Torus():TriMesh()
     }
 
     //torus remaining circle computing
-    while(angleTorus<360){
+    angle=0;
+    while(angle<360){
         for(unsigned int i=0;i<primaryCircle.size();i++){
             glm::vec3 vtxToRotate(primaryCircle[i][0],allVtx[i][1],allVtx[i][2]);
-            glm::vec3 vtxRotated = glm::rotateZ(vtxToRotate,angleTorus);
+            glm::vec3 vtxRotated = glm::rotateZ(vtxToRotate,angle);
             aVtx[0]=vtxRotated[0];
             aVtx[1]=vtxRotated[1];
             aVtx[2]=vtxRotated[2];
 
             allVtx.push_back(aVtx);
         }
-        angleTorus+=angleTorusV;
+        angle+=angleV;
     }
     //triangles vertex indices///////////////////////////////////////////////////////////
     int nbTrgl=2 * allVtx.size();

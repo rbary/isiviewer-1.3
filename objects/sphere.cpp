@@ -1,12 +1,16 @@
 #include "sphere.h"
-#define COLATITUDE_VARIATION 10
-#define LONGITUDE_VARIATION 10
 #define MAX_COLATITUDE 180
 #define MAX_LONGITUDE 360
 
-Sphere::Sphere():TriMesh()
+Sphere::Sphere(int nbpoint):TriMesh()
 {
     _name="Sphere";
+    //angle variation computing
+    if(nbpoint < 5){
+        throw std::domain_error("Dot number deficient: at least 5 dots are required to create Sphere");
+    }
+    float angleV=360/nbpoint;
+
     //Vertex coordinates/////////////////////////////////////////////////////////////////
     float colatitude=0;
     float longitude=0;
@@ -30,7 +34,7 @@ Sphere::Sphere():TriMesh()
     botPeakVtx.push_back(-1);
 
     //top first circle vertices coordinates------------------------------------------------------
-    colatitude=COLATITUDE_VARIATION;
+    colatitude=angleV;
     while(longitude < 360){
         aVtx[0]= sin(colatitude * PI/180.0) * cos(longitude * PI/180.0);
         aVtx[1]= sin(colatitude * PI/180.0) * sin(longitude * PI/180.0);
@@ -38,13 +42,13 @@ Sphere::Sphere():TriMesh()
 
         topFirstCircleVtx.push_back(aVtx);
         nbCircleVtx++;
-        longitude+=LONGITUDE_VARIATION;
+        longitude+=angleV;
     }
     longitude=0;
 
     //remaining surface vertices coordinates---------------------------------------------
-    colatitude+=COLATITUDE_VARIATION;
-    while(colatitude < (MAX_COLATITUDE-COLATITUDE_VARIATION)){
+    colatitude+=angleV;
+    while(colatitude < (MAX_COLATITUDE-angleV)){
 
         while(longitude < MAX_LONGITUDE){
             aVtx[0]= sin(colatitude * PI/180.0) * cos(longitude * PI/180.0);
@@ -52,21 +56,21 @@ Sphere::Sphere():TriMesh()
             aVtx[2]= cos(colatitude * PI/180.0);
 
             remainingSfVtx.push_back(aVtx);
-            longitude+=LONGITUDE_VARIATION;
+            longitude+=angleV;
         }
         longitude=0;
-        colatitude = colatitude + COLATITUDE_VARIATION;
+        colatitude = colatitude + angleV;
     }
 
     //bottom last circle vertices coordinates---------------------------------------------------
-    colatitude=MAX_COLATITUDE-COLATITUDE_VARIATION;
+    colatitude=MAX_COLATITUDE-angleV;
     while(longitude < MAX_LONGITUDE){
         aVtx[0]= sin(colatitude * PI/180.0) * cos(longitude * PI/180.0);
         aVtx[1]= sin(colatitude * PI/180.0) * sin(longitude * PI/180.0);
         aVtx[2]= cos(colatitude * PI/180.0);
 
         botLastCircleVtx.push_back(aVtx);
-        longitude+=LONGITUDE_VARIATION;
+        longitude+=angleV;
     }
     longitude=0;
     colatitude=0;
